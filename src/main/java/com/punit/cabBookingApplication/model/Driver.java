@@ -17,9 +17,11 @@ public class Driver {
     private int age;
     private VehicleInfo vehicleInfo;
     private Location location;
+    private Boolean isAvailable;
 
     public Driver(String name, Gender gender, int age, VehicleInfo vehicleInfo, Location location) {
         this.driverID = UUID.randomUUID().toString();
+        this.isAvailable = true;
         this.name = name;
         this.gender = gender;
         this.age = age;
