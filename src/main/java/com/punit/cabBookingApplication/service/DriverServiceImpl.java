@@ -5,6 +5,7 @@ import com.punit.cabBookingApplication.exception.DriverNotFoundException;
 import com.punit.cabBookingApplication.model.Driver;
 import com.punit.cabBookingApplication.repository.DriverRepository;
 import com.punit.cabBookingApplication.util.helper.Location;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,29 +13,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class DriverServiceImpl implements DriverService {
+    @Autowired
     private DriverRepository driverRepository;
-
-    public DriverServiceImpl() {
-        this.driverRepository = new DriverRepository();
-    }
 
 
     @Override
     public String addDriver(DriverDTO driverDTO) {
         Driver driver = mapDtoToDriver(driverDTO);
-        this.driverRepository.driverDB().add(driver);
+        this.driverRepository.addDriver(driver);
         return driver.getDriverID();
     }
 
     @Override
     public Driver getDriverById(String id) {
-        Driver driverFromDb = null;
-        for(Driver driver : this.driverRepository.driverDB()) {
-            if(driver.getDriverID().equals(id)) {
-                driverFromDb = driver;
-                break;
-            }
-        }
+        Driver driverFromDb = this.driverRepository.getDriver(id);
         if(driverFromDb == null) {
             throw new DriverNotFoundException("No Driver found with id: "+id);
         }
@@ -43,7 +35,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<Driver> getAvailableDrivers(Location userLocation, int maxDistance) {
-        return this.driverRepository.driverDB().stream()
+        return this.driverRepository.getDrivers().stream()
                 .filter(Driver::getIsAvailable)
                 .filter(driver -> calculateDistance(driver.getLocation(), userLocation) <= maxDistance)
                 .collect(Collectors.toList());
@@ -54,9 +46,6 @@ public class DriverServiceImpl implements DriverService {
     }
 
     private int calculateDistance(Location location1, Location location2) {
-        int deltaX = location2.getX() - location1.getX();
-        int deltaY = location2.getY() - location1.getY();
-
-        return (int)Math.floor(Math.sqrt((deltaX*deltaX) + (deltaY * deltaY)));
+        return (int) Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
     }
 }

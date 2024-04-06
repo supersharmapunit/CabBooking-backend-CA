@@ -3,7 +3,7 @@ package com.punit.cabBookingApplication.controller;
 import com.punit.cabBookingApplication.dto.UserDTO;
 import com.punit.cabBookingApplication.model.User;
 import com.punit.cabBookingApplication.service.UserService;
-import com.punit.cabBookingApplication.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +13,8 @@ import java.util.Map;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
 
+    @Autowired
     private UserService userService;
-    public CustomerController() {
-        this.userService = new UserServiceImpl();
-    }
 
     @PostMapping
     public String addCustomer(@RequestBody UserDTO customer) {

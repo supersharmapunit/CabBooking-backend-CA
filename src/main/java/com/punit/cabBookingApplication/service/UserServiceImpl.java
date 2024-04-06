@@ -4,38 +4,30 @@ import com.punit.cabBookingApplication.dto.UserDTO;
 import com.punit.cabBookingApplication.exception.UserNotFoundException;
 import com.punit.cabBookingApplication.model.User;
 import com.punit.cabBookingApplication.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
+    @Autowired
     private UserRepository userRepository;
-
-    public UserServiceImpl() {
-        this.userRepository = new UserRepository();
-    }
 
     public String addUser(UserDTO userDTO) {
         User user = mapDTOToUser(userDTO);
-        this.userRepository.userDB().add(user);
+        this.userRepository.addUser(user);
         return user.getUserID();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return this.userRepository.userDB();
+        return this.userRepository.getUsers();
     }
 
     @Override
     public User getUserById(String userID) {
-        User userFromDB = null;
-        for(User user : this.userRepository.userDB()) {
-            if(user.getUserID().equals(userID)) {
-                userFromDB = user;
-                break;
-            }
-        }
+        User userFromDB = this.userRepository.getUser(userID);
         if(userFromDB == null) {
             throw new UserNotFoundException("User not found: " + userID);
         }
