@@ -1,6 +1,7 @@
 package com.punit.cabBookingApplication.service;
 
 import com.punit.cabBookingApplication.dto.DriverDTO;
+import com.punit.cabBookingApplication.dto.ModelCreatedResponseDTO;
 import com.punit.cabBookingApplication.exception.DriverNotFoundException;
 import com.punit.cabBookingApplication.model.Driver;
 import com.punit.cabBookingApplication.repository.DriverRepository;
@@ -18,10 +19,10 @@ public class DriverServiceImpl implements DriverService {
 
 
     @Override
-    public String addDriver(DriverDTO driverDTO) {
+    public ModelCreatedResponseDTO addDriver(DriverDTO driverDTO) {
         Driver driver = mapDtoToDriver(driverDTO);
         this.driverRepository.addDriver(driver);
-        return driver.getDriverID();
+        return new ModelCreatedResponseDTO(driver.getDriverID());
     }
 
     @Override
@@ -39,6 +40,11 @@ public class DriverServiceImpl implements DriverService {
                 .filter(Driver::getIsAvailable)
                 .filter(driver -> calculateDistance(driver.getLocation(), userLocation) <= maxDistance)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Driver> getAllDrivers() {
+        return this.driverRepository.getDrivers();
     }
 
     private Driver mapDtoToDriver(DriverDTO driverDTO) {

@@ -1,9 +1,10 @@
 package com.punit.cabBookingApplication.controller;
 
+import com.punit.cabBookingApplication.dto.ResponseDTO;
 import com.punit.cabBookingApplication.dto.UserDTO;
-import com.punit.cabBookingApplication.model.User;
 import com.punit.cabBookingApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +17,17 @@ public class CustomerController {
     private UserService userService;
 
     @PostMapping
-    public String addCustomer(@RequestBody UserDTO customer) {
-        return this.userService.addUser(customer);
+    public ResponseEntity<ResponseDTO> addCustomer(@RequestBody UserDTO customer) {
+        try {
+            return ResponseEntity.created(null).body(new ResponseDTO(true, "Customer added successfully",
+                    this.userService.addUser(customer), null));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new ResponseDTO(false, "Unable to add customer", null, e.getMessage()));
+        }
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return this.userService.getAllUsers();
+    public ResponseEntity<ResponseDTO> getAllUsers() {
+        return ResponseEntity.ok(new ResponseDTO(true, "Customers fetched successfully", this.userService.getAllUsers(), null));
     }
 }

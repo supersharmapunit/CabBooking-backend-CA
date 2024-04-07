@@ -1,5 +1,6 @@
 package com.punit.cabBookingApplication.service;
 
+import com.punit.cabBookingApplication.dto.ModelCreatedResponseDTO;
 import com.punit.cabBookingApplication.dto.UserDTO;
 import com.punit.cabBookingApplication.exception.UserNotFoundException;
 import com.punit.cabBookingApplication.model.User;
@@ -14,10 +15,10 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
-    public String addUser(UserDTO userDTO) {
+    public ModelCreatedResponseDTO addUser(UserDTO userDTO) {
         User user = mapDTOToUser(userDTO);
         this.userRepository.addUser(user);
-        return user.getUserID();
+        return new ModelCreatedResponseDTO(user.getUserID());
     }
 
     @Override

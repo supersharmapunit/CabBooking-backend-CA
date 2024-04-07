@@ -32,7 +32,7 @@ public class RideServiceImpl implements  RideService{
         lock.readLock().lock();
         try {
             User user = this.userService.getUserById(findRideRequestDTO.getUserId());
-            List<Driver> availableDrivers = this.driverService.getAvailableDrivers(findRideRequestDTO.getSource(), 5);
+            List<Driver> availableDrivers = this.driverService.getAvailableDrivers(findRideRequestDTO.getSource(), 4);
             if(availableDrivers.isEmpty()) {
                 throw new NoRidesAvailableException("No rides available");
             }
