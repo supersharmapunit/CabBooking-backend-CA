@@ -3,37 +3,36 @@ package com.punit.cabBookingApplication.repository;
 import com.punit.cabBookingApplication.model.Ride;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class RideRepository {
-    Map<String, Ride> rides;
+    List<Ride> rides;
 
     public RideRepository() {
-        this.rides = new HashMap<>();
+        this.rides = new ArrayList<>();
     }
 
     public void addRide(Ride ride) {
-        rides.put(ride.getRideId(), ride);
+        rides.add(ride);
     }
 
     public Ride getRide(String rideId) {
-        return rides.get(rideId);
+        for(Ride ride: rides) {
+            if(ride.getRideId().equals(rideId)) {
+                return ride;
+            }
+        }
+        return null;
     }
 
-    public Map<String, Ride> getRides() {
+    public List<Ride> getRides() {
         return rides;
-    }
-
-    public boolean rideExists(String rideId) {
-        return rides.containsKey(rideId);
     }
 
     public Ride getRideByDriverId(String driverId) {
         UUID id = UUID.fromString(driverId);
-        for(Ride ride: rides.values()) {
+        for(Ride ride: rides) {
             UUID userUUID = UUID.fromString(ride.getDriverId());
             if(userUUID.equals(id)) {
                 return ride;
@@ -45,7 +44,7 @@ public class RideRepository {
     public void removeRideByUserIdAndDriverId(String userId, String driverId) {
         UUID userIdUUID = UUID.fromString(userId);
         UUID driverIdUUID = UUID.fromString(driverId);
-        for(Ride ride: rides.values()) {
+        for(Ride ride: rides) {
             UUID userUUID = UUID.fromString(ride.getUserId());
             UUID driverUUID = UUID.fromString(ride.getDriverId());
             if(userUUID.equals(userIdUUID) && driverUUID.equals(driverIdUUID)) {

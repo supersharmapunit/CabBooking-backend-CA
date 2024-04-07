@@ -85,6 +85,6 @@ public class RideServiceImpl implements  RideService{
 
     @Override
     public List<Ride> getRides() {
-        return this.rideRepository.getRides().values().stream().toList();
+        return this.rideRepository.getRides();
     }
 }
