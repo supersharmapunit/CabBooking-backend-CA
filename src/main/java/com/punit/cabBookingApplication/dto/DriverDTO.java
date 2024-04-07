@@ -3,11 +3,13 @@ package com.punit.cabBookingApplication.dto;
 import com.punit.cabBookingApplication.util.helper.Gender;
 import com.punit.cabBookingApplication.util.helper.Location;
 import com.punit.cabBookingApplication.util.helper.VehicleInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
+@AllArgsConstructor
 public class DriverDTO {
     private String name;
     private Gender gender;
