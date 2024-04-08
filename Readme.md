@@ -28,6 +28,118 @@ The system uses in-memory data structures (e.g., `HashMap`, `List`) to store and
 
 The application will start running on `http://localhost:8080/`.
 
+## API Routes
+
+### Base URL - `http://localhost:8080/api/v1`
+
+### CustomerController
+
+#### POST /customers
+- **Description:** Add a new customer
+- **Request Body:** `@Valid UserDTO customer`
+- **Response:** `ResponseDTO`
+- Success: HTTP 201 Created
+- Validation Error: HTTP 400 Bad Request
+- Internal Error: HTTP 500 Internal Server Error
+
+#### GET /customers
+- **Description:** Get all customers
+- **Response:** `ResponseDTO`
+- Success: HTTP 200 OK
+
+### DriverController
+
+#### POST /drivers
+- **Description:** Create a new driver
+- **Request Body:** `DriverDTO driverDto`
+- **Response:** `ResponseDTO`
+- Success: HTTP 201 Created
+- Error: HTTP 400 Bad Request
+
+#### GET /drivers
+- **Description:** Get all drivers
+- **Response:** `ResponseDTO`
+- Success: HTTP 200 OK
+- Error: HTTP 400 Bad Request
+
+### RideController
+
+#### POST /rides/find
+- **Description:** Find available rides
+- **Request Body:** `FindRideRequestDTO findRideRequestDTO`
+- **Response:** `ResponseDTO`
+- Success: HTTP 200 OK
+- No Rides Available: HTTP 404 Not Found
+- Bad Request: HTTP 400 Bad Request
+- Internal Error: HTTP 500 Internal Server Error
+
+#### POST /rides/choose
+- **Description:** Choose a ride
+- **Request Parameters:** `String userId, String driverId`
+- **Response:** `ResponseDTO`
+- Success: HTTP 200 OK
+- No Rides Available: HTTP 404 Not Found
+- Bad Request: HTTP 400 Bad Request
+- Internal Error: HTTP 500 Internal Server Error
+
+### DTO Structures
+
+#### DriverDTO
+```json
+{
+  "name": "string",
+  "gender": "string",
+  "age": 0,
+  "vehicleInfo": {
+    "carType": "string",
+    "registrationNumber": "string"
+  },
+  "location": {
+    "x": 0,
+    "y": 0
+  }
+}
+```
+#### UserDTO
+```json
+{
+  "name": "string",
+  "gender": "string",
+  "age": 0
+}
+```
+
+#### FindRideRequestDTO
+```json
+{
+  "userId": "string",
+  "source": {
+    "x": 0,
+    "y": 0
+  },
+  "destination": {
+    "x": 0,
+    "y": 0
+  }
+}
+```
+
+#### ResponseDTO
+```json
+{
+  "success": true,
+  "message": "string",
+  "data": {},
+  "error": "string"
+}
+```
+
+#### ModelCreatedResponseDTO
+```json
+{
+  "id": "string"
+}
+```
 ## Testing
 
 The project includes unit tests for the key components of the application. To run the tests.
